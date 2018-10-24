@@ -1,0 +1,25 @@
+﻿@model MyConcert.Models.BookingTicket
+
+@{
+    // for (int i = 0; i < Model.Count; i++)
+    // var bookingTicket = Model.booking.BookingTickets[i];
+    var Quantities = ViewBag.Quantities as IEnumerable<System.Web.Mvc.SelectListItem>;
+    var TicketTypes = ViewBag.TicketTypes as IEnumerable<MyConcert.Models.TicketDetails>;
+    var ticketType = TicketTypes.Where(t => t.TicketId == Model.TicketId).First();
+    var totalID = "bookingTicket_Total" + ticketType.TicketId;
+    <tr>
+        <td>@ticketType.name (@ticketType.TicketDescription)</td>
+        <td>@Html.DisplayFor(model => model.Price)</td>
+        <td class="text-right">
+
+            @Html.HiddenFor(model => model.TicketId)
+            @Html.HiddenFor(model => model.BookingNo)
+            @Html.HiddenFor(model => model.Price)
+            @Html.DropDownListFor(model => model.Quantity, Quantities,
+           new { @name = "Quantity", @class = "form-control",
+               @onchange = "calcTotal(this.value, " + Model.Price + ", '" + totalID + "')" })
+        </td>
+        <td id="@totalID"> </td>
+    </tr>
+}
+

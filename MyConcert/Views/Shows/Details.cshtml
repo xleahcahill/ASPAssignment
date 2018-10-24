@@ -1,0 +1,140 @@
+﻿@model MyConcert.Models.Show
+
+    
+@{
+    ViewBag.Title = "Details";
+    var returnUrl = "~/Shows/Details/" + Model.ShowId;
+}
+
+<h2>
+    @Html.DisplayFor(model => model.ArtistName)
+</h2>
+<h4>PRESENTS: @Html.DisplayFor(model => model.ShowTitle)</h4>
+<ul class="list-inline pull-right">
+
+    @Html.ActionLink("Back to Home", "Index")
+</ul>
+<img class="" src="~/Content/images/details/@Html.DisplayFor(modelItem => Model.stageimage)" alt="@Html.DisplayFor(model => model.ShowTitle)" />
+<div class="row">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-4">                              
+                    <h3>@Html.DisplayFor(model => model.ArtistName)</h3>
+                </div>
+                <div class="col-sm-4">
+                    <h3>Details...</h3>
+                    <p>Date: @Html.DisplayFor(model => model.ShowDate)</p>
+                    <p>Book tickets for this date: </p>
+
+                    @if (!User.Identity.IsAuthenticated)
+            {
+                        <div class="alert alert-warning" role="alert">
+                            <h4>You must be logged in to make a booking</h4>
+                            <p>Already registered?  @Html.ActionLink("Login here", 
+                                                   "Login", 
+                                                   "Account", 
+                                                   new { @returnUrl = returnUrl }, new { @class = "label label-warning" })</p>
+                            <p>Not yet registered? @Html.ActionLink("Register here",
+                                                  "Register",
+                                                  "Account", new { @returnUrl = returnUrl }, new { @class = "label label-warning" })</p>
+                        </div>
+                    }
+                    @using (Html.BeginForm("Create", "Bookings", FormMethod.Post, new { onsubmit = "return validateForm();" }))
+                    {
+                    @Html.AntiForgeryToken()
+                    DateTime currentDate = DateTime.Today.Date;
+                    if (Model.ShowDate == null)
+                    {
+                    <p>No show times currently schedule!</p>
+                    }
+
+                    else
+                    {
+
+                    if (currentDate != Model.ShowDate.Date)
+                    {
+                    <h3>@Model.ShowDate.ToString("dd MMMM yyyy")</h3>
+                    }
+
+                    <p>
+                        <button type="submit" name="ShowId"
+                                class="btn btn-info btn-show-details" value="@Model.ShowId">
+                            @Model.ShowDate.ToString("dddd, dd/ MMMM /yyyy")
+                        </button>
+
+                    </p>
+
+                    currentDate = Model.ShowDate.Date;
+                    }
+
+                    }
+
+                </div>
+                <div class="col-sm-4">
+                    <h3>Venue info:</h3>
+                    <p>Venue ID: @Html.DisplayFor(model => model.VenueId)</p>
+                    <p> Seating Types Available in this venue:</p>
+                    @Html.DisplayFor(model => model.SeatingTypes)<br>
+                    <br>
+                </div>
+            </div>
+        </div> 
+</div>
+
+    <div class="container">
+    <div class="row">
+
+        <div class="col-sm-9 col-md-6">
+
+   
+
+    
+
+    </div>
+</div>
+</div>
+
+
+@if (!User.Identity.IsAuthenticated)
+{
+    <div id="modalLoginRegister" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">You must be logged in to continue with the booking<span class="glyphicon"></span></h4>
+                </div>
+                <div class="modal-body">
+                    <p>Already registered?  @Html.ActionLink("Login here", "Login", "Account", new { @returnUrl = returnUrl }, new { @class = "label label-info" })</p>
+                    <p>Not yet registered?  @Html.ActionLink("Register here", "Register", "Account", new { @returnUrl = returnUrl }, new { @class = "label label-info" })</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+@section Scripts {
+    <script>
+
+        function validateForm() {
+            var loginRegister = document.getElementById("modalLoginRegister");
+
+            // check if element modal HTML element found
+            if (loginRegister) {
+                $('#modalLoginRegister').modal('show');
+
+                return false;
+            }
+
+            return true;
+        }
+    </script>
+}

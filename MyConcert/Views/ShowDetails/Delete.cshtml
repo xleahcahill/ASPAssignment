@@ -1,0 +1,120 @@
+﻿@model MyConcert.Models.ShowDetails
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>ShowDetails</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Genre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Genre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.VenueName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.VenueName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.VenueId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.VenueId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ShowDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ShowDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ShowStartTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ShowStartTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ShowEndTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ShowEndTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Summary)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Summary)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Duration)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Duration)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsVIPAvailable)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsVIPAvailable)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsFrontRowAvailable)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsFrontRowAvailable)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsTieredSeatingAvailable)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsTieredSeatingAvailable)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ArtistName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ArtistName)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

@@ -1,0 +1,45 @@
+﻿@model IEnumerable<MyConcert.Models.Show>
+@{
+    ViewBag.Title = "Index";
+}
+<h2>UKTicketTours.co.uk</h2>
+<h4>Search for the hottest concerts here.</h4>
+<span>@Html.ActionLink("More Details; Quick overview.", "Index", "ShowDetails")</span>
+
+<div class="row">
+    @using (Html.BeginForm( "Index", "Shows", FormMethod.Post, new { @class = "form-inline pull-right", @role = "search" } ))
+    {
+        @Html.Label("searchString", "Search for: ")
+        @Html.TextBox("searchString", null, new { @class = "form-control", @placeholder = "Concert Title or Artist Name or Venue" })
+    }
+</div>
+
+<ul class="list-inline">
+    <li>@Html.ActionLink("Check out shows at our latest venue: Portsmouth", "Index", new { searchString = "Portsmouth shows" })</li>
+    <li>@Html.ActionLink("Shows at the 02 Arena", "Index", new { searchString = "Shows at the 02 Arena" })</li>
+
+
+</ul>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-sm-6 col-md-3">
+            <div class="thumbnail film-thumbnail">
+                <div class="caption">
+
+                    <h3>@Html.ActionLink(item.ArtistName, "Details", new { id = item.ShowId })</h3>
+                    <span>@Html.ActionLink(item.ShowTitle, "Details", new { id = item.ShowId })</span><br><br>
+                  
+                </div>
+                <img src="~/content/images/@Html.DisplayFor(modelItem => item.Conimage)"
+                     alt="@Html.DisplayFor(modelItem => item.ShowTitle)" />
+                <div class="caption">
+
+                    </div>
+                </div>
+            </div>
+          
+            }
+  </div>
+     

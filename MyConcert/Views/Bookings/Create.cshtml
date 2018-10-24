@@ -1,0 +1,124 @@
+﻿@model MyConcert.ViewModels.BookingViewModel
+
+@{
+    ViewBag.Title = "Create";
+    var ShowDate = @Model.ShowDate.ToString("dddd MMMM dd yyyy");
+}
+
+
+<h2>Show Details</h2>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-2">
+            <a href="~/Films/Details/@Html.DisplayFor(model => model.Show.ShowId)">
+                <img class="img-responsive img-thumbnail" src="~/content/images//@Html.DisplayFor(model => model.Show.Conimage)" alt="@Html.DisplayFor(model => model.Show.ShowTitle)" />
+            </a>
+        </div>
+        
+        <div class="col-xs-12 col-sm-10">
+            <h3>You are booking: </h3>
+            <p>
+                <span class="text-info">@Html.ActionLink(Model.Show.ShowTitle, "Details", "Show", new { id = Model.Show.ShowId }, null)</span>
+                <br />
+                on the <span class="text-info">@Html.DisplayFor(model => model.ShowDate)</span>
+            </p>
+        </div>
+    </div>
+
+    @using (Html.BeginForm("Book", "Bookings", FormMethod.Post, new { onsubmit = "return validateForm();" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-horizontal">
+            <h4></h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            @Html.EditorFor(model => model.Booking)
+
+            <p>@Html.ValidationMessageFor(model => model.Quantities, "", new { @class = "text-danger", @id = "validationQuantities" })</p>
+            <table class="table table-striped">
+                <tr>
+                    <th>Please select your tickets</th>
+                    <th class="text-right">Price</th>
+                    <th>Quantity</th>
+                    <th class="text-right">Subtotal</th>
+
+
+                </tr>
+                @Html.EditorFor(model => model.Booking.bookingTicket,
+                    new { Quantities = Model.Quantities, TicketTypes = Model.TicketTypes })
+
+                <tr>
+                    <th colspan="3" class="text-right">Grand Total</th>
+                    <th class="text-right" id="grand-total">£0.00</th>
+                </tr>
+            </table>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        function calcTotal(qty, price, totalID) {
+            var total = qty * price;
+            document.getElementById(totalID).innerHTML = "£" + total.toFixed(2)
+            var grandTotal = 0.0;
+            var subTotals = document.querySelectorAll("td[id^=bookingTicket_Total]");
+            var numElements = subTotals.length;
+
+            // Loop through all the subtotal elements found
+            for (var i = 0; i < numElements; i++) {
+                var td = subTotals[i].innerHTML.replace("£", "");
+
+                total = parseFloat(td);
+                // check that the conversion was successful
+                if (isNaN(total) == false) {
+                    // add value to grand total
+                    grandTotal += total;
+                }
+
+                document.getElementById("grand-total").innerHTML = "£" + grandTotal.toFixed(2);
+
+            }
+
+
+        }
+
+        function validateForm() {
+            var validQuantitiesMsg = document.getElementById("validationQuantities");
+            validQuantitiesMsg.textContent = "";
+            var quantities = document.querySelectorAll("select[name$=Quantity]");
+            var numElements = quantities.length;
+            for (var i = 0; i < numElements; i++) {
+
+                if (quantities[i].value != "0") {
+                    return true;
+                }
+            }
+
+            // if it gets here, it means no tickets have been booked, all quantities are zero, display an error message
+            validQuantitiesMsg.textContent = "You must book at least one ticket";
+            // $("select[name=Quantity] option:selected");
+            return false;
+        }
+
+    </script>
+
+
+
+}
+
+
+
+
